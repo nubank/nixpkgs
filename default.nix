@@ -2,6 +2,7 @@ self: super:
 let
   mkDart = opts: super.pkgs.callPackage (import ./dart.nix opts) { };
   mkFlutter = opts: super.pkgs.callPackage (import ./flutter.nix opts) { };
+  hover = opts: super.pkgs.callPackage (import ./hover.nix opts) { };
   getPatches = dir:
     let files = builtins.attrNames (builtins.readDir dir);
     in map (f: dir + ("/" + f)) files;
@@ -20,5 +21,6 @@ in {
       sha256Hash = "12j1p3220319411lxbrqfq297fvzjyha1sbscmjpbqc4c4sssxyr";
       patches = getPatches ./patches/flutter;
     };
+    hover = hover;
   };
 }
