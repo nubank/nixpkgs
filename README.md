@@ -2,8 +2,8 @@
 
 ## Contents of the overlay
 
-### flutter-nubank
-Pinned version of Flutter used in Nubank.
+### dart-nubank and flutter-nubank
+Pinned version of Dart/Flutter used in Nubank. Should be used together.
 
 ## Usage of the overlay
 

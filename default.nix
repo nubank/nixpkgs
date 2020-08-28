@@ -1,10 +1,16 @@
 self: super:
 let
+  mkDart = opts: super.pkgs.callPackage (import ./dart.nix opts) { };
   mkFlutter = opts: super.pkgs.callPackage (import ./flutter.nix opts) { };
   getPatches = dir:
     let files = builtins.attrNames (builtins.readDir dir);
     in map (f: dir + ("/" + f)) files;
 in {
+  dart-nubank = mkDart {
+    channel = "stable";
+    version = "2.9.1";
+    sha256Hash = "1v8fisjp948r0xp9zakiiz6j0flpnzin4jgl1blingif902j22cf";
+  };
   flutter-nubank = mkFlutter rec {
     pname = "flutter";
     channel = "stable";
