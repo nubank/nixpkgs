@@ -21,6 +21,6 @@ in {
       sha256Hash = "12j1p3220319411lxbrqfq297fvzjyha1sbscmjpbqc4c4sssxyr";
       patches = getPatches ./patches/flutter;
     };
-    hover = hover;
+    hover = hover {};
   };
 }

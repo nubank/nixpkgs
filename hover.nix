@@ -1,3 +1,5 @@
+{}:
+
 { buildGoModule, docker, fetchFromGitHub, libGL, libX11, libXcursor, libXi,
   libXinerama, libXrandr, libXxf86vm, makeWrapper, stdenv, xorg}:
 
