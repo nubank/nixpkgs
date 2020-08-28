@@ -1,5 +1,3 @@
-{}:
-
 { buildGoModule, docker, fetchFromGitHub, libGL, libX11, libXcursor, libXi,
   libXinerama, libXrandr, libXxf86vm, makeWrapper, stdenv, xorg}:
 
@@ -21,8 +19,8 @@ buildGoModule rec {
   nativeBuildInputs = [ makeWrapper ];
 
   patches = [
-    ./patches/hover/fix-assets-path.patch
-    ./patches/hover/fix-build-docker.patch
+    ./fix-assets-path.patch
+    ./fix-build-docker.patch
   ];
   postPatch = ''
     sed -i 's|@assetsFolder@|'"''${out}/share/assets"'|g' internal/fileutils/assets.go
