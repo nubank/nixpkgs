@@ -6,17 +6,19 @@ let
     let files = builtins.attrNames (builtins.readDir dir);
     in map (f: dir + ("/" + f)) files;
 in {
-  dart-nubank = mkDart {
-    channel = "stable";
-    version = "2.9.1";
-    sha256Hash = "1v8fisjp948r0xp9zakiiz6j0flpnzin4jgl1blingif902j22cf";
-  };
-  flutter-nubank = mkFlutter rec {
-    pname = "flutter";
-    channel = "stable";
-    version = "1.20.2";
-    filename = "flutter_linux_${version}-${channel}.tar.xz";
-    sha256Hash = "12j1p3220319411lxbrqfq297fvzjyha1sbscmjpbqc4c4sssxyr";
-    patches = getPatches ./patches/flutter;
+  nubank = {
+    dart = mkDart {
+      channel = "stable";
+      version = "2.9.1";
+      sha256Hash = "1v8fisjp948r0xp9zakiiz6j0flpnzin4jgl1blingif902j22cf";
+    };
+    flutter = mkFlutter rec {
+      pname = "flutter";
+      channel = "stable";
+      version = "1.20.2";
+      filename = "flutter_linux_${version}-${channel}.tar.xz";
+      sha256Hash = "12j1p3220319411lxbrqfq297fvzjyha1sbscmjpbqc4c4sssxyr";
+      patches = getPatches ./patches/flutter;
+    };
   };
 }
