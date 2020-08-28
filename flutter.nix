@@ -119,7 +119,6 @@ in runCommand drvName {
     homepage = "https://flutter.dev";
     license = licenses.bsd3;
     platforms = [ "x86_64-linux" ];
-    maintainers = with maintainers; [ babariviere ];
   };
 } ''
   mkdir -p $out/bin
