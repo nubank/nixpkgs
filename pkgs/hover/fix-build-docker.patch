@@ -11,3 +11,15 @@ index 2853826..d78cc6b 100644
  
  	cmd.PersistentFlags().MarkHidden("branch")
  }
+diff --git a/cmd/docker.go b/cmd/docker.go
+index 7727533..d488224 100644
+--- a/cmd/docker.go
++++ b/cmd/docker.go
+@@ -50,6 +50,7 @@ func dockerHoverBuild(targetOS string, packagingTask packaging.Task, buildFlags
+ 		"--mount", "type=bind,source=" + engineCacheDir + ",target=/root/.cache/hover/engine",
+ 		"--mount", "type=bind,source=" + dockerGoCacheDir + ",target=/go-cache",
+ 		"--env", "GOCACHE=/go-cache",
++		"--env", "CGO_ENABLED=1",
+ 	}
+ 	if runtime.GOOS != "windows" {
+ 		currentUser, err := user.Current()
