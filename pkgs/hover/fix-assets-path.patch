@@ -1,8 +1,8 @@
 diff --git a/internal/fileutils/assets.go b/internal/fileutils/assets.go
-index 83eacd9..0b80e51 100644
+index 83eacd9..05dc398 100644
 --- a/internal/fileutils/assets.go
 +++ b/internal/fileutils/assets.go
-@@ -1,28 +1,7 @@
+@@ -1,28 +1,6 @@
  //go:generate rice embed
  package fileutils
  
@@ -19,7 +19,7 @@ index 83eacd9..0b80e51 100644
 -	assetsBoxOnce sync.Once
 -)
 -
- // AssetsBox hover's assets box
+-// AssetsBox hover's assets box
 -func AssetsBox() *rice.Box {
 -	assetsBoxOnce.Do(func() {
 -		var err error

@@ -6,6 +6,6 @@
 with pkgs;
 pkgs.mkShell {
   buildInputs = [
-    nubank.dart # Input here your derivation to build
+    nubank.hover # Input here your derivation to build
   ];
 }

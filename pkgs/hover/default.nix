@@ -3,17 +3,17 @@
 
 buildGoModule rec {
   pname = "hover";
-  version = "unstable-2020-07-17";
+  version = "0.43.0";
 
   subPackages = [ "." ];
 
   vendorSha256 = "1wr08phjm87dxim47i8449rmq5wfscvjyz65g3lxmv468x209pam";
 
   src = fetchFromGitHub {
-    rev = "aa3008e561afca8f5f0c8e796123140f361ffc8f";
+    rev = "v${version}";
     owner = "go-flutter-desktop";
     repo = pname;
-    sha256 = "0r52qly6qcqihnyz8mkgqnaz75pawc5r318g7mfl84yi4f29gbw6";
+    sha256 = "0iw6sxg86wfdbihl2hxzn43ppdzl1p7g5b9wl8ac3xa9ix8759ax";
   };
 
   nativeBuildInputs = [ makeWrapper ];
