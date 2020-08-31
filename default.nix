@@ -6,7 +6,7 @@ in {
     dart = callPackage ./pkgs/dart {};
     flutter = callPackage ./pkgs/flutter {};
     hover = callPackage ./pkgs/hover {
-      inherit (super.xorg) libX11 libXcursor libXi libXinerama libXrandr libXxf86vm;
+      inherit (super.xorg);
     };
   };
 }

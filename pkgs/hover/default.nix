@@ -1,5 +1,4 @@
-{ buildGoModule, docker, fetchFromGitHub, libGL, libX11, libXcursor, libXi,
-  libXinerama, libXrandr, libXxf86vm, makeWrapper, stdenv, xorg}:
+{ buildGoModule, docker, fetchFromGitHub, libGL, makeWrapper, stdenv, xorg, glfw }:
 
 buildGoModule rec {
   pname = "hover";
@@ -33,7 +32,16 @@ buildGoModule rec {
 
     wrapProgram "$out/bin/hover" \
       --prefix PATH : ${stdenv.lib.makeBinPath [ docker ]} \
-      --prefix LD_LIBRARY_PATH : ${stdenv.lib.makeLibraryPath [ xorg.libXext libX11 libXcursor libXinerama libXrandr libXxf86vm libXi libGL]}
+      --prefix LD_LIBRARY_PATH : ${stdenv.lib.makeLibraryPath [
+        libGL
+        xorg.libX11
+        xorg.libXcursor
+        xorg.libXi
+        xorg.libXinerama
+        xorg.libXrandr
+        xorg.libXxf86vm
+        xorg.libXext
+      ]}
   '';
 
   meta = with stdenv.lib; {
