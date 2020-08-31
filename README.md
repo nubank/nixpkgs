@@ -23,3 +23,13 @@ to be in control of which revision of the overlay you run.
   ];
 }
 ```
+
+## Testing local
+
+You can test your new/updated derivation updating the `shell.nix`, you just need to update the `buildInputs` with the derivation you want to build then run:
+
+```bash
+nix-shell
+```
+
+With that you will have a shell with your built derivation.
