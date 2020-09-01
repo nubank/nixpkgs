@@ -28,7 +28,7 @@ in buildGoModule rec {
 
   subPackages = [ "." ];
 
-  modSha256 = "0qg26bzbdmb0cl2msgg2ycxhdkhiqbriihq9f725w7a6j0mcbz3a";
+  vendorSha256 = "1wr08phjm87dxim47i8449rmq5wfscvjyz65g3lxmv468x209pam";
 
   src = fetchFromGitHub {
     rev = "v${version}";
