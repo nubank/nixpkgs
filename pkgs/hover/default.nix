@@ -47,6 +47,8 @@ in buildGoModule rec {
     pkgconfig
   ] ++ libs;
 
+  checkRun = false;
+
   patches = [
     ./fix-assets-path.patch
   ];
@@ -61,6 +63,7 @@ in buildGoModule rec {
     chmod -R a+rx $out/share/assets
 
     wrapProgram "$out/bin/hover" \
+      --prefix CPATH : ${xorg.libX11.dev}/include:${xorg.libXcursor.dev}/include:${xorg.libXi.dev}/include:${xorg.libXinerama.dev}/include:${xorg.libXrandr.dev}/include:${xorg.libXxf86vm.dev}/include:${xorg.libXext.dev}/include \
       --prefix LD_LIBRARY_PATH : ${stdenv.lib.makeLibraryPath [
         xorg.libX11
         xorg.libXcursor
