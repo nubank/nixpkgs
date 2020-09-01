@@ -1,5 +1,6 @@
 { lib, buildGoModule, buildFHSUserEnv, pkgconfig, fetchFromGitHub,
-  stdenv, writeScript, xorg, libglvnd, addOpenGLRunpath, makeWrapper, gcc }:
+  stdenv, writeScript, xorg, libglvnd, addOpenGLRunpath, makeWrapper,
+  gcc, go, flutter }:
 
 let
   pname = "hover";
@@ -39,7 +40,12 @@ in buildGoModule rec {
 
   nativeBuildInputs = [ addOpenGLRunpath makeWrapper ];
 
-  buildInputs = [ pkgconfig gcc ] ++ libs;
+  propagatedBuildInputs = [
+    flutter
+    gcc
+    go
+    pkgconfig
+  ] ++ libs;
 
   patches = [
     ./fix-assets-path.patch
