@@ -1,12 +1,34 @@
-{ buildGoModule, docker, fetchFromGitHub, libGL, makeWrapper, stdenv, xorg, glfw }:
+{ lib, buildGoModule, buildFHSUserEnv, pkgconfig, fetchFromGitHub,
+  stdenv, writeScript, xorg, libglvnd, addOpenGLRunpath, makeWrapper, gcc }:
 
-buildGoModule rec {
+let
   pname = "hover";
   version = "0.43.0";
 
+  libs = with xorg; [
+    libXi
+    libXxf86vm
+    libglvnd.dev
+    libX11.dev
+    libXcursor.dev
+    libXinerama.dev
+    libXrandr.dev
+    libXrender.dev
+    xorgproto
+  ];
+in buildGoModule rec {
+  inherit pname version;
+
+  meta = with stdenv.lib; {
+    description = "A build tool to run Flutter applications on desktop";
+    homepage = "https://github.com/go-flutter-desktop/hover";
+    license = licenses.bsd3;
+    platforms = platforms.linux ++ platforms.darwin;
+  };
+
   subPackages = [ "." ];
 
-  vendorSha256 = "1wr08phjm87dxim47i8449rmq5wfscvjyz65g3lxmv468x209pam";
+  modSha256 = "0qg26bzbdmb0cl2msgg2ycxhdkhiqbriihq9f725w7a6j0mcbz3a";
 
   src = fetchFromGitHub {
     rev = "v${version}";
@@ -15,12 +37,14 @@ buildGoModule rec {
     sha256 = "0iw6sxg86wfdbihl2hxzn43ppdzl1p7g5b9wl8ac3xa9ix8759ax";
   };
 
-  nativeBuildInputs = [ makeWrapper ];
+  nativeBuildInputs = [ addOpenGLRunpath makeWrapper ];
+
+  buildInputs = [ pkgconfig gcc ] ++ libs;
 
   patches = [
     ./fix-assets-path.patch
-    ./fix-build-docker.patch
   ];
+
   postPatch = ''
     sed -i 's|@assetsFolder@|'"''${out}/share/assets"'|g' internal/fileutils/assets.go
   '';
@@ -31,9 +55,7 @@ buildGoModule rec {
     chmod -R a+rx $out/share/assets
 
     wrapProgram "$out/bin/hover" \
-      --prefix PATH : ${stdenv.lib.makeBinPath [ docker ]} \
       --prefix LD_LIBRARY_PATH : ${stdenv.lib.makeLibraryPath [
-        libGL
         xorg.libX11
         xorg.libXcursor
         xorg.libXi
@@ -44,10 +66,7 @@ buildGoModule rec {
       ]}
   '';
 
-  meta = with stdenv.lib; {
-    description = "A build tool to run Flutter applications on desktop";
-    homepage = "https://github.com/go-flutter-desktop/hover";
-    license = licenses.bsd3;
-    platforms = platforms.linux ++ platforms.darwin;
-  };
+  postFixup = ''
+    addOpenGLRunpath $out/bin/hover
+  '';
 }

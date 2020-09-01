@@ -8,8 +8,5 @@ in {
     hover = callPackage ./pkgs/hover {
       inherit (super.xorg);
     };
-    hover-nix = callPackage ./pkgs/hover-nix {
-      inherit (super.xorg);
-    };
   };
 }
