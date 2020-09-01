@@ -6,6 +6,13 @@ let
   pname = "hover";
   version = "0.43.0";
 
+  bins = [
+    flutter
+    gcc
+    go
+    pkgconfig
+  ];
+
   libs = with xorg; [
     libXi
     libXxf86vm
@@ -40,12 +47,7 @@ in buildGoModule rec {
 
   nativeBuildInputs = [ addOpenGLRunpath makeWrapper ];
 
-  propagatedBuildInputs = [
-    flutter
-    gcc
-    go
-    pkgconfig
-  ] ++ libs;
+  propagatedBuildInputs = bins ++ libs;
 
   checkRun = false;
 
@@ -63,6 +65,7 @@ in buildGoModule rec {
     chmod -R a+rx $out/share/assets
 
     wrapProgram "$out/bin/hover" \
+      --prefix PATH : ${stdenv.lib.makeBinPath bins} \
       --prefix CPATH : ${xorg.libX11.dev}/include:${xorg.libXcursor.dev}/include:${xorg.libXi.dev}/include:${xorg.libXinerama.dev}/include:${xorg.libXrandr.dev}/include:${xorg.libXxf86vm.dev}/include:${xorg.libXext.dev}/include \
       --prefix LD_LIBRARY_PATH : ${stdenv.lib.makeLibraryPath [
         xorg.libX11
