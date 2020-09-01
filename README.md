@@ -9,7 +9,16 @@ Pinned version of Dart/Flutter used in Nubank. Should be used together.
 ### `hover`
 
 [Hover](https://github.com/go-flutter-desktop/hover) allows running Flutter
-apps in desktop. For now it should be used with `flutter` package.
+apps in desktop.
+
+This package for now it is impure. It builds some Go dependencies at runtime,
+including `go-flutter` (that is a C dependency). If you have issues with
+linking phase, delete the following files:
+
+```shell
+rm -rf `go env GOPATH`
+rm -rf `go env GOCACHE`
+```
 
 ## Usage of the overlay
 
