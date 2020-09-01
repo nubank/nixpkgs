@@ -6,6 +6,9 @@
 with pkgs;
 pkgs.mkShell {
   buildInputs = [
-    nubank.hover # Input here your derivation to build
+    # You can comment some derivations here to test only one package
+    # nubank.dart
+    # nubank.flutter
+    nubank.hover
   ];
 }

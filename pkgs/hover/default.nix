@@ -1,8 +1,31 @@
-{ buildGoModule, docker, fetchFromGitHub, libGL, makeWrapper, stdenv, xorg, glfw }:
+{ lib, buildGoModule, buildFHSUserEnv, pkgconfig, fetchFromGitHub,
+  stdenv, writeScript, xorg, libglvnd, addOpenGLRunpath, makeWrapper,
+  gcc, go, flutter }:
 
-buildGoModule rec {
+let
   pname = "hover";
   version = "0.43.0";
+
+  libs = with xorg; [
+    libXi
+    libXxf86vm
+    libglvnd.dev
+    libX11.dev
+    libXcursor.dev
+    libXinerama.dev
+    libXrandr.dev
+    libXrender.dev
+    xorgproto
+  ];
+in buildGoModule rec {
+  inherit pname version;
+
+  meta = with stdenv.lib; {
+    description = "A build tool to run Flutter applications on desktop";
+    homepage = "https://github.com/go-flutter-desktop/hover";
+    license = licenses.bsd3;
+    platforms = platforms.linux ++ platforms.darwin;
+  };
 
   subPackages = [ "." ];
 
@@ -15,12 +38,21 @@ buildGoModule rec {
     sha256 = "0iw6sxg86wfdbihl2hxzn43ppdzl1p7g5b9wl8ac3xa9ix8759ax";
   };
 
-  nativeBuildInputs = [ makeWrapper ];
+  nativeBuildInputs = [ addOpenGLRunpath makeWrapper ];
+
+  propagatedBuildInputs = [
+    flutter
+    gcc
+    go
+    pkgconfig
+  ] ++ libs;
+
+  checkRun = false;
 
   patches = [
     ./fix-assets-path.patch
-    ./fix-build-docker.patch
   ];
+
   postPatch = ''
     sed -i 's|@assetsFolder@|'"''${out}/share/assets"'|g' internal/fileutils/assets.go
   '';
@@ -31,9 +63,8 @@ buildGoModule rec {
     chmod -R a+rx $out/share/assets
 
     wrapProgram "$out/bin/hover" \
-      --prefix PATH : ${stdenv.lib.makeBinPath [ docker ]} \
+      --prefix CPATH : ${xorg.libX11.dev}/include:${xorg.libXcursor.dev}/include:${xorg.libXi.dev}/include:${xorg.libXinerama.dev}/include:${xorg.libXrandr.dev}/include:${xorg.libXxf86vm.dev}/include:${xorg.libXext.dev}/include \
       --prefix LD_LIBRARY_PATH : ${stdenv.lib.makeLibraryPath [
-        libGL
         xorg.libX11
         xorg.libXcursor
         xorg.libXi
@@ -44,10 +75,7 @@ buildGoModule rec {
       ]}
   '';
 
-  meta = with stdenv.lib; {
-    description = "A build tool to run Flutter applications on desktop";
-    homepage = "https://github.com/go-flutter-desktop/hover";
-    license = licenses.bsd3;
-    platforms = platforms.linux ++ platforms.darwin;
-  };
+  postFixup = ''
+    addOpenGLRunpath $out/bin/hover
+  '';
 }
