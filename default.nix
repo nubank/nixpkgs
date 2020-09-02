@@ -25,8 +25,8 @@ in
       # ruby
     ];
     clojure-tools = with pkgs; [
-      apacheKafka
-      clj-kondo
+      # TODO: graalvm build is failing on master and this triggers a long build
+      # clj-kondo
       clojure
       clojure-lsp
       leiningen
