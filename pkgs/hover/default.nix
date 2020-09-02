@@ -1,9 +1,11 @@
 { lib
 , buildGoModule
 , buildFHSUserEnv
+, corefonts
 , pkgconfig
 , fetchFromGitHub
 , stdenv
+, roboto
 , writeScript
 , xorg
 , libglvnd
@@ -84,11 +86,13 @@ in
 buildFHSUserEnv rec {
   name = pname;
   targetPkgs = pkgs: [
+    corefonts
     flutter
     gcc
     go
     hover
     pkgconfig
+    roboto
   ] ++ libs;
 
   runScript = "hover";
