@@ -39,12 +39,13 @@ let
 in
 stdenv.mkDerivation {
   name = "flutter-patch";
-  unpackPhase = "true";
 
   meta = with stdenv.lib; {
     description =
       "Script to patch a vanilla Flutter SDK installation to work in NixOS.";
   };
+
+  unpackPhase = "true";
 
   installPhase = ''
     mkdir -p $out/bin

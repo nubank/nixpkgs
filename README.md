@@ -37,6 +37,26 @@ rm -rf `go env GOPATH`
 rm -rf `go env GOCACHE`
 ```
 
+### `{all,cli,clojure,desktop}-tools`
+
+This is a list of packages that can be appended to your
+`environment.systemPackages` like this:
+
+```nix
+{
+  # ...
+  environment.systemPackages =
+    [...]
+    ++ nubank.cli-tools
+    ++ nubank.clojure-tools
+    ++ nubank.desktop-tools; # the sum of them are equivalent to `nubank.all-tools`
+  # ...
+}
+```
+
+This will add multiple applications used in Nubank. The usage is optional,
+but this make it easier to install all tools and keep them up-to-date.
+
 ## Usage of the overlay
 
 ### Latest master each rebuild
@@ -65,7 +85,7 @@ Afterwards, just add this to your `/etc/configuration.nix`:
     nubank.flutter
     nubank.dart
     nubank.hover
-  ];
+  ] ++ nubank.all-tools;
   # ...
 }
 ```
