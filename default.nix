@@ -7,6 +7,7 @@ in
   nubank = rec {
     dart = callPackage ./pkgs/dart {};
     flutter = callPackage ./pkgs/flutter {};
+    flutter-patch = callPackage ./pkgs/flutter-patch {};
     hover = callPackage ./pkgs/hover {
       inherit (super.xorg);
       go = pkgs.go;

@@ -6,6 +6,23 @@
 
 Pinned version of Dart/Flutter used in Nubank. Should be used together.
 
+### `flutter-patch`
+
+It is an alternative to `dart`/`flutter` above. This script patches a vanilla
+Flutter SDK installation. Just use it like this:
+
+```shell
+flutter-patch $FLUTTER_ROOT
+```
+
+Keep in mind that using this script is kind trick. That is because Flutter SDK
+downloads some binaries afterwards. Everytime Flutter downloads some binaries
+you need to rerun this script. You will see strange problems otherwise (i.e.:
+`flutter` commands failing to run or `no such file or directory` errors).
+
+So using `dart`/`flutter` packages is **recommended** and this script should
+be used as a last resort.
+
 ### `hover`
 
 [Hover](https://github.com/go-flutter-desktop/hover) allows running Flutter
