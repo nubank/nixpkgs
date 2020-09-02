@@ -2,7 +2,8 @@ self: super:
 let
   pkgs = super.pkgs;
   callPackage = super.lib.callPackageWith super;
-in {
+in
+{
   nubank = rec {
     dart = callPackage ./pkgs/dart {};
     flutter = callPackage ./pkgs/flutter {};

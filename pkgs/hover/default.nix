@@ -1,6 +1,18 @@
-{ lib, buildGoModule, buildFHSUserEnv, pkgconfig, fetchFromGitHub,
-stdenv, writeScript, xorg, libglvnd, addOpenGLRunpath, makeWrapper,
-gcc, go, flutter }:
+{ lib
+, buildGoModule
+, buildFHSUserEnv
+, pkgconfig
+, fetchFromGitHub
+, stdenv
+, writeScript
+, xorg
+, libglvnd
+, addOpenGLRunpath
+, makeWrapper
+, gcc
+, go
+, flutter
+}:
 
 let
   pname = "hover";
@@ -68,7 +80,8 @@ let
     '';
   };
 
-in buildFHSUserEnv rec {
+in
+buildFHSUserEnv rec {
   name = pname;
   targetPkgs = pkgs: [
     flutter
