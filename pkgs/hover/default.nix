@@ -1,7 +1,7 @@
 { lib
 , buildGoModule
 , buildFHSUserEnv
-, corefonts
+, dejavu_fonts
 , pkgconfig
 , fetchFromGitHub
 , stdenv
@@ -86,7 +86,7 @@ in
 buildFHSUserEnv rec {
   name = pname;
   targetPkgs = pkgs: [
-    corefonts
+    dejavu_fonts
     flutter
     gcc
     go
