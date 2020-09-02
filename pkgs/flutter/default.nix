@@ -1,8 +1,9 @@
 { pkgs }:
 
 let
-  mkFlutter = opts: pkgs.callPackage (import ./flutter.nix opts) { };
-in mkFlutter rec {
+  mkFlutter = opts: pkgs.callPackage (import ./flutter.nix opts) {};
+in
+mkFlutter rec {
   pname = "flutter";
   channel = "stable";
   version = "1.20.2";

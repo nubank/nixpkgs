@@ -1,9 +1,36 @@
-{ channel, pname, version, sha256Hash, patches
-, filename ? "flutter_linux_v${version}-${channel}.tar.xz" }:
+{ channel
+, pname
+, version
+, sha256Hash
+, patches
+, filename ? "flutter_linux_v${version}-${channel}.tar.xz"
+}:
 
-{ bash, buildFHSUserEnv, cacert, coreutils, git, makeWrapper, runCommand, stdenv
-, fetchurl, alsaLib, dbus, expat, libpulseaudio, libuuid, libX11, libxcb
-, libXcomposite, libXcursor, libXdamage, libXfixes, libGL, nspr, nss, systemd }:
+{ bash
+, buildFHSUserEnv
+, cacert
+, coreutils
+, git
+, makeWrapper
+, runCommand
+, stdenv
+, fetchurl
+, alsaLib
+, dbus
+, expat
+, libpulseaudio
+, libuuid
+, libX11
+, libxcb
+, libXcomposite
+, libXcursor
+, libXdamage
+, libXfixes
+, libGL
+, nspr
+, nss
+, systemd
+}:
 
 let
   drvName = "flutter-${channel}-${version}";
@@ -62,10 +89,12 @@ let
     name = "${drvName}-fhs-env";
     multiPkgs = pkgs: [
       # Flutter only use these certificates
-      (runCommand "fedoracert" { } ''
-        mkdir -p $out/etc/pki/tls/
-        ln -s ${cacert}/etc/ssl/certs $out/etc/pki/tls/certs
-      '')
+      (
+        runCommand "fedoracert" {} ''
+          mkdir -p $out/etc/pki/tls/
+          ln -s ${cacert}/etc/ssl/certs $out/etc/pki/tls/certs
+        ''
+      )
       pkgs.zlib
     ];
     targetPkgs = pkgs:
@@ -99,7 +128,8 @@ let
       ];
   };
 
-in runCommand drvName {
+in
+runCommand drvName {
   startScript = ''
     #!${bash}/bin/bash
     export PUB_CACHE=''${PUB_CACHE:-"$HOME/.pub-cache"}
