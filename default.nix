@@ -9,8 +9,7 @@ in
     flutter = callPackage ./pkgs/flutter {};
     hover = callPackage ./pkgs/hover {
       inherit (super.xorg);
-      # TODO: go_1_14 seems broken in 20.03
-      go = pkgs.go_1_13;
+      go = pkgs.go;
       flutter = flutter;
     };
   };
