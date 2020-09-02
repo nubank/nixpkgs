@@ -37,7 +37,7 @@ rm -rf `go env GOPATH`
 rm -rf `go env GOCACHE`
 ```
 
-### `{all,cli,clojure,desktop}-tools`
+### `{all,...}-tools`
 
 This is a list of packages that can be appended to your
 `environment.systemPackages` like this:
@@ -47,9 +47,9 @@ This is a list of packages that can be appended to your
   # ...
   environment.systemPackages =
     [...]
-    ++ nubank.cli-tools
-    ++ nubank.clojure-tools
-    ++ nubank.desktop-tools; # the sum of them are equivalent to `nubank.all-tools`
+    ++ nubank.all-tools
+    # Not included by default since they're proprietary tools
+    ++ nubank.desktop-tools;
   # ...
 }
 ```
