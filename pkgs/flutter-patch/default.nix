@@ -1,13 +1,13 @@
 { pkgs, stdenv }:
 
 let
-  patchFlutter = pkgs.writeShellScriptBin "patch-flutter" ''
+  flutterPatch = pkgs.writeShellScriptBin "flutter-patch" ''
     usage() {
       cat <<EOT
     Patch vanilla Flutter SDK installation to work in NixOS.
 
     Usage:
-      patch-flutter FLUTTER_SDK_PATH
+      flutter-patch FLUTTER_SDK_PATH
     EOT
       exit 1
     }
@@ -24,7 +24,7 @@ let
 
     stopNest() { true; }
 
-    patchFlutterSdk() {
+    flutterPatchSdk() {
       source "${<nixpkgs/pkgs/build-support/setup-hooks/patch-shebangs.sh>}"
       patchShebangs --build "$1/bin/"
       find "$1/bin/" -executable -type f -exec "${pkgs.patchelf}/bin/patchelf" --set-interpreter "${pkgs.glibc}/lib/ld-linux-x86-64.so.2" {} \;
@@ -34,11 +34,11 @@ let
       usage
     fi
 
-    patchFlutterSdk "$@"
+    flutterPatchSdk "$@"
   '';
 in
 stdenv.mkDerivation {
-  name = "patch-flutter";
+  name = "flutter-patch";
   unpackPhase = "true";
 
   meta = with stdenv.lib; {
@@ -48,8 +48,8 @@ stdenv.mkDerivation {
 
   installPhase = ''
     mkdir -p $out/bin
-    cp -r ${patchFlutter}/bin $out
+    cp -r ${flutterPatch}/bin $out
   '';
 
-  buildInputs = [ patchFlutter ];
+  buildInputs = [ flutterPatch ];
 }

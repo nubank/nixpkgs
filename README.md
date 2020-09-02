@@ -6,13 +6,13 @@
 
 Pinned version of Dart/Flutter used in Nubank. Should be used together.
 
-### `patch-flutter`
+### `flutter-patch`
 
 It is an alternative to `dart`/`flutter` above. This script patches a vanilla
 Flutter SDK installation. Just use it like this:
 
 ```shell
-patch-flutter $FLUTTER_ROOT
+flutter-patch $FLUTTER_ROOT
 ```
 
 Keep in mind that using this script is kind trick. That is because Flutter SDK

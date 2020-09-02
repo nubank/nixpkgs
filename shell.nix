@@ -10,6 +10,6 @@ pkgs.mkShell {
     nubank.dart
     nubank.flutter
     nubank.hover
-    nubank.patch-flutter
+    nubank.flutter-patch
   ];
 }
