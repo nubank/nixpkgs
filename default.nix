@@ -24,11 +24,22 @@ in
       nodejsNubank
       nss
       nssTools
-      openfortivpn
       openssl
       python37Full
       # TODO: ruby is installed by Ansible, but I never saw it used in Nubank
       # ruby
+      (openfortivpn.overrideAttrs (old: rec {
+        repo = "openfortivpn";
+        version = "1.15.0";
+        name = "${repo}-${version}";
+
+        src = fetchFromGitHub {
+          owner = "adrienverge";
+          inherit repo;
+          rev = "v${version}";
+          sha256 = "1qsfgpxg553s8rc9cyrc4k96z0pislxsdxb9wyhp8fdprkak2mw2";
+        };
+      }))
       (yarn.override ({ nodejs = nodejsNubank; }))
     ];
 
