@@ -66,6 +66,8 @@ just fetching the tarball of latest master on rebuild.
 This has side-effects if packages breaks or things like that you may want
 to be in control of which revision of the overlay you run.
 
+For this option, just add this to your `/etc/nixos/configuration.nix`:
+
 ```nix
 {
   nixpkgs.overlays = [
@@ -76,7 +78,7 @@ to be in control of which revision of the overlay you run.
 }
 ```
 
-Afterwards, just add this to your `/etc/configuration.nix`:
+Afterwards, also edit your systemPackages configuration in `/etc/nixos/configuration.nix` to look something like this:
 
 ```nix
 {
