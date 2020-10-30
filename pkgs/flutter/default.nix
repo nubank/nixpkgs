@@ -1,14 +1,11 @@
-{ pkgs }:
+{ flutterPackages }:
 
-let
-  mkFlutter = opts: pkgs.callPackage (import ./flutter.nix opts) {};
-in
-mkFlutter rec {
+flutterPackages.mkFlutter rec {
   pname = "flutter";
   channel = "stable";
-  version = "1.20.2";
+  version = "1.22.2";
   filename = "flutter_linux_${version}-${channel}.tar.xz";
-  sha256Hash = "12j1p3220319411lxbrqfq297fvzjyha1sbscmjpbqc4c4sssxyr";
+  sha256Hash = "0q9p8b251s3agjxpc97pjrjvfgxn9qyfswb1g7kq8id3hpljrm11";
   patches = [
     ./disable-auto-update.patch
     ./move-cache.patch

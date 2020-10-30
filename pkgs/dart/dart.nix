@@ -1,4 +1,4 @@
-{ version ? "2.9.1", channel, sha256Hash }:
+{ version ? "2.10.0", channel, sha256Hash }:
 
 { stdenv, fetchurl, unzip }:
 
