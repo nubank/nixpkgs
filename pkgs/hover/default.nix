@@ -18,7 +18,7 @@
 
 let
   pname = "hover";
-  version = "0.44.0";
+  version = "0.43.0";
 
   libs = with xorg; [
     libX11.dev
@@ -51,7 +51,7 @@ let
       rev = "v${version}";
       owner = "go-flutter-desktop";
       repo = pname;
-      sha256 = "0qpbdffynj1yz9kwinfpmi530p25x1ifbn2ykacahsqmsb16w65y";
+      sha256 = "0iw6sxg86wfdbihl2hxzn43ppdzl1p7g5b9wl8ac3xa9ix8759ax";
     };
 
     nativeBuildInputs = [ addOpenGLRunpath makeWrapper ];

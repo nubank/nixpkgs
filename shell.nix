@@ -9,7 +9,7 @@ pkgs.mkShell {
     # You can comment some derivations here to test only one package
     nubank.dart
     nubank.flutter
-    # nubank.flutter-patch
+    nubank.flutter-patch
     nubank.hover
   ] ++ nubank.all-tools;
 }
