@@ -1,6 +1,8 @@
-{ flutterPackages }:
+{ flutterPackages, dart }:
 
-flutterPackages.mkFlutter rec {
+let
+  dart-stable = dart;
+in flutterPackages.mkFlutter rec {
   pname = "flutter";
   channel = "stable";
   version = "1.22.2";
@@ -10,4 +12,5 @@ flutterPackages.mkFlutter rec {
     ./disable-auto-update.patch
     ./move-cache.patch
   ];
+  dart = dart-stable;
 }
