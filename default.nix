@@ -8,7 +8,9 @@ in
   nubank = rec {
     dart = callPackage ./pkgs/dart {};
 
-    flutter = callPackage ./pkgs/flutter {};
+    flutter = callPackage ./pkgs/flutter {
+      dart = dart;
+    };
 
     flutter-patch = callPackage ./pkgs/flutter-patch {};
 

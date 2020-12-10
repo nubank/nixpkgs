@@ -1,8 +1,9 @@
 { flutterPackages, dart }:
-
 let
-  dart-stable = dart;
-in flutterPackages.mkFlutter rec {
+  nixpkgs = (builtins.fetchTarball {
+    url = https://github.com/NixOS/nixpkgs/archive/master.tar.gz;
+  });
+in nixpkgs.flutterPackages.mkFlutter rec {
   pname = "flutter";
   channel = "stable";
   version = "1.22.2";
@@ -12,5 +13,5 @@ in flutterPackages.mkFlutter rec {
     ./disable-auto-update.patch
     ./move-cache.patch
   ];
-  dart = dart-stable;
+  dart = dart;
 }
