@@ -3,12 +3,21 @@ let
   pkgs = super.pkgs;
   callPackage = super.lib.callPackageWith super;
   nodejsNubank = pkgs.nodejs-10_x;
+  nixpkgs = import (import ./pkgs/nixpkgs-src.nix {
+    fakeSha256 = super.stdenv.lib.fakeSha256;
+  }) {
+    config = {};
+    overlays = [];
+  };
 in
 {
   nubank = rec {
     dart = callPackage ./pkgs/dart {};
 
-    flutter = callPackage ./pkgs/flutter {};
+    flutter = callPackage ./pkgs/flutter {
+      flutterPackages = nixpkgs.flutterPackages;
+      dart = dart;
+    };
 
     flutter-patch = callPackage ./pkgs/flutter-patch {};
 

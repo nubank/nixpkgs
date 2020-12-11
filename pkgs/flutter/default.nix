@@ -1,6 +1,9 @@
-{ flutterPackages }:
+{ flutterPackages, dart }:
 
-flutterPackages.mkFlutter rec {
+let
+  # Avoid infinite recursion here
+  myDart = dart;
+in flutterPackages.mkFlutter rec {
   pname = "flutter";
   channel = "stable";
   version = "1.22.2";
@@ -10,4 +13,5 @@ flutterPackages.mkFlutter rec {
     ./disable-auto-update.patch
     ./move-cache.patch
   ];
+  dart = myDart;
 }
