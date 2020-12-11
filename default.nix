@@ -3,12 +3,21 @@ let
   pkgs = super.pkgs;
   callPackage = super.lib.callPackageWith super;
   nodejsNubank = pkgs.nodejs-10_x;
+  unstable = import (import ./pkgs/nixpkgs-src.nix {
+    fakeSha256 = super.stdenv.lib.fakeSha256;
+  }) {
+    config = {};
+    overlays = [];
+  };
 in
 {
   nubank = rec {
     dart = callPackage ./pkgs/dart {};
 
-    flutter = callPackage ./pkgs/flutter {};
+    flutter = callPackage ./pkgs/flutter {
+      flutterPackages = unstable.flutterPackages;
+      dart = dart;
+    };
 
     flutter-patch = callPackage ./pkgs/flutter-patch {};
 
@@ -26,20 +35,9 @@ in
       nssTools
       openssl
       python37Full
+      unstable.openfortivpn
       # TODO: ruby is installed by Ansible, but I never saw it used in Nubank
       # ruby
-      (openfortivpn.overrideAttrs (old: rec {
-        repo = "openfortivpn";
-        version = "1.15.0";
-        name = "${repo}-${version}";
-
-        src = fetchFromGitHub {
-          owner = "adrienverge";
-          inherit repo;
-          rev = "v${version}";
-          sha256 = "1qsfgpxg553s8rc9cyrc4k96z0pislxsdxb9wyhp8fdprkak2mw2";
-        };
-      }))
       (yarn.override ({ nodejs = nodejsNubank; }))
     ];
 
