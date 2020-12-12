@@ -3,12 +3,12 @@ let
   pkgs = super.pkgs;
   callPackage = super.lib.callPackageWith super;
   nodejsNubank = pkgs.nodejs-10_x;
-  unstable = import (import ./pkgs/nixpkgs-src.nix {
-    fakeSha256 = super.stdenv.lib.fakeSha256;
-  }) {
-    config = {};
-    overlays = [];
-  };
+  unstable = import (builtins.fetchTarball {
+    url = "https://github.com/nixos/nixpkgs/tarball/fef46b9281cfde685bfdea74572eae34b518d48e";
+    # Use fakeSha256 to generate a new sha256 when updating, i.e.:
+    # sha256 = super.stdenv.lib.fakeSha256;
+    sha256 = "1cjn0i8zy145i2whdjxgk67smbh6jiq0snxps8cp061511vp3gz3";
+  }) {};
 in
 {
   nubank = rec {
