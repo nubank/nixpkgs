@@ -61,9 +61,8 @@ in
       zoom-us
     ];
 
-    hover = callPackage ./pkgs/hover {
-      inherit (super.xorg);
-      go = pkgs.go;
+    hover = unstable.callPackage ./pkgs/hover {
+      inherit (unstable);
       flutter = flutter;
     };
   };
