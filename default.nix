@@ -4,10 +4,10 @@ let
   callPackage = super.lib.callPackageWith super;
   nodejsNubank = pkgs.nodejs-10_x;
   unstable = import (builtins.fetchTarball {
-    url = "https://github.com/nixos/nixpkgs/tarball/fef46b9281cfde685bfdea74572eae34b518d48e";
+    url = "https://github.com/nixos/nixpkgs/tarball/bcfdcaed7902c9b42b247f31cde84e69a3604bcc";
     # Use fakeSha256 to generate a new sha256 when updating, i.e.:
     # sha256 = super.stdenv.lib.fakeSha256;
-    sha256 = "1cjn0i8zy145i2whdjxgk67smbh6jiq0snxps8cp061511vp3gz3";
+    sha256 = "05zavb2b53nqld5q2vxlkk41vxfvdrwfnvmlng0775v0q4951n8d";
   }) {};
 in
 {
@@ -36,6 +36,7 @@ in
       openssl
       python37Full
       unstable.openfortivpn
+      unstable.tektoncd-cli
       # TODO: ruby is installed by Ansible, but I never saw it used in Nubank
       # ruby
       (yarn.override ({ nodejs = nodejsNubank; }))
