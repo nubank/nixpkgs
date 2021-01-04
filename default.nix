@@ -1,70 +1,88 @@
 self: super:
 let
-  pkgs = super.pkgs;
-  callPackage = super.lib.callPackageWith super;
-  nodejsNubank = pkgs.nodejs-10_x;
   unstable = import (builtins.fetchTarball {
-    url = "https://github.com/nixos/nixpkgs/tarball/7002108e07d5140759ff0d7d2eb4045e619b79d6";
+    # When bumping, use the last commit from https://github.com/NixOS/nixpkgs/tree/nixpkgs-unstable
+    # So we can use Hydra cache when possible
+    url = "https://github.com/nixos/nixpkgs/archive/2080afd039999a58d60596d04cefb32ef5fcc2a2.tar.gz";
     # Use fakeSha256 to generate a new sha256 when updating, i.e.:
     # sha256 = super.stdenv.lib.fakeSha256;
-    sha256 = "1izlzaz2nq7pc64k638s6gfqhvxs8snff9ab3hi93k8csm154z84";
+    sha256 = "0i677swvj8fxfwg3jibd0xl33rn0rq0adnniim8jnp384whnh8ry";
   }) {};
+  # TODO: Remove when merged: https://github.com/NixOS/nixpkgs/pull/108328
+  clojureLspBump = import (builtins.fetchTarball {
+    url = "https://github.com/ericdallo/nixpkgs/archive/b12b7f96ad7ccdf057cbcd5d34b57a854c601709.tar.gz";
+    sha256 = "0g4fjs7ydpw4r4a2fmccr82pifc1vwvca590zr5bjnmalfwrbhvp";
+  }) {};
+  callPackage = unstable.pkgs.callPackage;
 in
 {
   nubank = rec {
+    # Custom packages
     dart = callPackage ./pkgs/dart {};
 
     flutter = callPackage ./pkgs/flutter {
-      flutterPackages = unstable.flutterPackages;
       dart = dart;
     };
 
     flutter-patch = callPackage ./pkgs/flutter-patch {};
 
-    all-tools = cli-tools ++ clojure-tools ++ jupyter-tools;
+    nodejs = unstable.nodejs-10_x;
 
-    cli-tools = with pkgs; [
-      awscli
-      fzf
-      gettext
-      jq
-      kubectl
-      minikube
-      nodejsNubank
-      nss
-      nssTools
-      openssl
-      python37Full
-      unstable.openfortivpn
-      unstable.tektoncd-cli
-      # TODO: ruby is installed by Ansible, but I never saw it used in Nubank
-      # ruby
-      (yarn.override ({ nodejs = nodejsNubank; }))
-    ];
+    yarn = (unstable.yarn.override {
+      nodejs = nodejs;
+    });
 
-    clojure-tools = with pkgs; [
-      # TODO: graalvm build is failing on master and this triggers a long build
-      # clj-kondo
-      clojure
-      clojure-lsp
-      leiningen
-    ];
-
-    jupyter-tools = with pkgs; [
-      jupyter
-      python37Packages.jupyter_core
-    ];
-
-    # Those are proprietary tools that are better backported from unstable,
-    # so don't include them by default
-    desktop-tools = with pkgs; [
-      slack
-      zoom-us
-    ];
+    leiningen = (unstable.leiningen.override {
+      jdk = unstable.openjdk8;
+    });
 
     hover = unstable.hover.override {
       inherit (unstable);
       flutter = flutter;
     };
+
+    # Meta packages
+    all-tools = cli-tools ++ clojure-tools ++ jupyter-tools;
+
+    cli-tools = with unstable; [
+      awscli
+      circleci-cli
+      fzf
+      gettext
+      github-cli
+      jq
+      kubectl
+      minikube
+      nodejs
+      nss
+      nssTools
+      openfortivpn
+      openssl
+      python37Full
+      sassc
+      tektoncd-cli
+      yarn
+      # TODO: ruby is installed by Ansible, but I never saw it used in Nubank
+      # ruby
+    ];
+
+    clojure-tools = with unstable; [
+      babashka
+      clj-kondo
+      clojure
+      clojureLspBump.clojure-lsp
+      leiningen
+    ];
+
+    jupyter-tools = with unstable; [
+      jupyter
+      python37Packages.jupyter_core
+    ];
+
+    # Some Nubankers prefer custom clients, so don't include this set in all-tools
+    desktop-tools = with unstable; [
+      slack
+      zoom-us
+    ];
   };
 }
