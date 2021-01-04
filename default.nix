@@ -4,10 +4,10 @@ let
   callPackage = super.lib.callPackageWith super;
   nodejsNubank = pkgs.nodejs-10_x;
   unstable = import (builtins.fetchTarball {
-    url = "https://github.com/nixos/nixpkgs/tarball/bcfdcaed7902c9b42b247f31cde84e69a3604bcc";
+    url = "https://github.com/nixos/nixpkgs/tarball/7002108e07d5140759ff0d7d2eb4045e619b79d6";
     # Use fakeSha256 to generate a new sha256 when updating, i.e.:
     # sha256 = super.stdenv.lib.fakeSha256;
-    sha256 = "05zavb2b53nqld5q2vxlkk41vxfvdrwfnvmlng0775v0q4951n8d";
+    sha256 = "1izlzaz2nq7pc64k638s6gfqhvxs8snff9ab3hi93k8csm154z84";
   }) {};
 in
 {
@@ -62,7 +62,7 @@ in
       zoom-us
     ];
 
-    hover = unstable.callPackage ./pkgs/hover {
+    hover = unstable.hover.override {
       inherit (unstable);
       flutter = flutter;
     };
