@@ -37,7 +37,6 @@ in
     });
 
     hover = unstable.hover.override {
-      inherit (unstable);
       flutter = flutter;
     };
 
