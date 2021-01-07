@@ -13,13 +13,7 @@ in
 {
   nubank = rec {
     # Custom packages
-    dart = (unstable.dart.overrideAttrs (oldAttrs: rec {
-      version = "2.10.4";
-      src = unstable.fetchurl {
-        url = "https://storage.googleapis.com/dart-archive/channels/stable/release/${version}/sdk/dartsdk-linux-x64-release.zip";
-        sha256 = "0dncmsfbwcn3ygflhp83i6z4bvc02fbpaq1vzdzw8xdk3sbynchb";
-      };
-    }));
+    dart = callPackage ./pkgs/dart {};
 
     flutter = callPackage ./pkgs/flutter {
       dart = dart;
