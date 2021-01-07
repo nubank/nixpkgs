@@ -5,6 +5,6 @@ let
 in
 mkDart {
   channel = "stable";
-  version = "2.10.0";
-  sha256Hash = "0dncmsfbwcn3ygflhp83i6z4bvc02fbpaq1vzdzw8xdk3sbynchb";
+  version = "2.10.4";
+  sha256Hash = "0pjqj2bsliq13q8b2mk2v07w4vzjqcmr984ygnwv5kx0dp5md7vq";
 }
