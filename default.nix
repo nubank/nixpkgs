@@ -3,22 +3,23 @@ let
   unstable = import (builtins.fetchTarball {
     # When bumping, use the last commit from https://github.com/NixOS/nixpkgs/tree/nixpkgs-unstable
     # So we can use Hydra cache when possible
-    url = "https://github.com/nixos/nixpkgs/archive/2080afd039999a58d60596d04cefb32ef5fcc2a2.tar.gz";
+    url = "https://github.com/nixos/nixpkgs/archive/479867700baa7ced259c979a0f724915c4d46d12.tar.gz";
     # Use fakeSha256 to generate a new sha256 when updating, i.e.:
     # sha256 = super.stdenv.lib.fakeSha256;
-    sha256 = "0i677swvj8fxfwg3jibd0xl33rn0rq0adnniim8jnp384whnh8ry";
-  }) {};
-  # TODO: Remove when merged: https://github.com/NixOS/nixpkgs/pull/108328
-  clojureLspBump = import (builtins.fetchTarball {
-    url = "https://github.com/ericdallo/nixpkgs/archive/b12b7f96ad7ccdf057cbcd5d34b57a854c601709.tar.gz";
-    sha256 = "0g4fjs7ydpw4r4a2fmccr82pifc1vwvca590zr5bjnmalfwrbhvp";
+    sha256 = "0dwci1sw81qn0b0cnksw3qf9lfhyz0rfvs14l3yh9iq6qfcs2aq7";
   }) {};
   callPackage = unstable.pkgs.callPackage;
 in
 {
   nubank = rec {
     # Custom packages
-    dart = callPackage ./pkgs/dart {};
+    dart = (unstable.dart.overrideAttrs (oldAttrs: rec {
+      version = "2.10.4";
+      src = unstable.fetchurl {
+        url = "https://storage.googleapis.com/dart-archive/channels/stable/release/${version}/sdk/dartsdk-linux-x64-release.zip";
+        sha256 = "0dncmsfbwcn3ygflhp83i6z4bvc02fbpaq1vzdzw8xdk3sbynchb";
+      };
+    }));
 
     flutter = callPackage ./pkgs/flutter {
       dart = dart;
@@ -69,7 +70,7 @@ in
       babashka
       clj-kondo
       clojure
-      clojureLspBump.clojure-lsp
+      clojure-lsp
       leiningen
     ];
 
