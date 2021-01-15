@@ -66,6 +66,7 @@ in
       clojure
       clojure-lsp
       leiningen
+      lumo
     ];
 
     jupyter-tools = with unstable; [
