@@ -3,37 +3,35 @@ let
   unstable = import (builtins.fetchTarball {
     # When bumping, use the last commit from https://github.com/NixOS/nixpkgs/tree/nixpkgs-unstable
     # So we can use Hydra cache when possible
-    url = "https://github.com/nixos/nixpkgs/archive/479867700baa7ced259c979a0f724915c4d46d12.tar.gz";
+    url = "https://github.com/nixos/nixpkgs/archive/4c9a74aa459dc525fcfdfb3019b234f68de66c8a.tar.gz";
     # Use fakeSha256 to generate a new sha256 when updating, i.e.:
     # sha256 = super.stdenv.lib.fakeSha256;
-    sha256 = "0dwci1sw81qn0b0cnksw3qf9lfhyz0rfvs14l3yh9iq6qfcs2aq7";
+    sha256 = "1wl1q3lqgn3lx3chil59l06pimh9by0bx16h9rk6nfmk6shhwrbw";
   }) {};
   callPackage = unstable.pkgs.callPackage;
 in
 {
   nubank = rec {
     # Custom packages
-    dart = callPackage ./pkgs/dart {};
+    dart = unstable.dart;
 
     flutter = callPackage ./pkgs/flutter {
-      dart = dart;
+      inherit dart;
     };
 
     flutter-patch = callPackage ./pkgs/flutter-patch {};
 
+    hover = unstable.hover.override { inherit flutter; };
+
     nodejs = unstable.nodejs-10_x;
 
     yarn = (unstable.yarn.override {
-      nodejs = nodejs;
+      inherit nodejs;
     });
 
     leiningen = (unstable.leiningen.override {
       jdk = unstable.openjdk8;
     });
-
-    hover = unstable.hover.override {
-      flutter = flutter;
-    };
 
     # Meta packages
     all-tools = cli-tools ++ clojure-tools ++ jupyter-tools;
