@@ -3,10 +3,10 @@ let
   unstable = import (builtins.fetchTarball {
     # When bumping, use the last commit from https://github.com/NixOS/nixpkgs/tree/nixpkgs-unstable
     # So we can use Hydra cache when possible
-    url = "https://github.com/nixos/nixpkgs/archive/4c9a74aa459dc525fcfdfb3019b234f68de66c8a.tar.gz";
+    url = "https://github.com/nixos/nixpkgs/archive/f5daa8ab31fb910712b3e1e71ae46818bc9e33b3.tar.gz";
     # Use fakeSha256 to generate a new sha256 when updating, i.e.:
     # sha256 = super.stdenv.lib.fakeSha256;
-    sha256 = "1wl1q3lqgn3lx3chil59l06pimh9by0bx16h9rk6nfmk6shhwrbw";
+    sha256 = "0sa96nmbs37fix7xxxzj3dmryi515arnzicfg71qhkp45gn44dzq";
   }) {};
   callPackage = unstable.pkgs.callPackage;
 in
