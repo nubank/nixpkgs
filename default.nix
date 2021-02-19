@@ -1,30 +1,30 @@
 final: prev:
 let
   # TODO: Once Flakes is stable we should manage this with flake.lock instead
-  unstable = import ./nixpkgs-src.nix {
-    inherit (prev) lib stdenv;
-  };
+  unstable = import ./nixpkgs-src.nix { inherit (prev) lib stdenv; };
 
   inherit (unstable.pkgs) callPackage;
+
+  dart = unstable.dart;
+
+  flutter = callPackage ./pkgs/flutter { inherit (final.nubank) dart; };
+
+  flutter-patch = callPackage ./pkgs/flutter-patch { };
+
+  hover = unstable.hover.override { inherit (final.nubank) flutter; };
+
+  nodejs = unstable.nodejs-10_x;
+
+  yarn = (unstable.yarn.override { inherit (final.nubank) nodejs; });
+
+  leiningen = (unstable.leiningen.override { jdk = unstable.openjdk8; });
 in {
-  nubank = rec {
+  nubank = {
     # Custom packages
-    dart = unstable.dart;
-
-    flutter = callPackage ./pkgs/flutter { inherit dart; };
-
-    flutter-patch = callPackage ./pkgs/flutter-patch { };
-
-    hover = unstable.hover.override { inherit flutter; };
-
-    nodejs = unstable.nodejs-10_x;
-
-    yarn = (unstable.yarn.override { inherit nodejs; });
-
-    leiningen = (unstable.leiningen.override { jdk = unstable.openjdk8; });
+    inherit dart flutter flutter-patch hover nodejs yarn leiningen;
 
     # Meta packages
-    all-tools = cli-tools ++ clojure-tools ++ jupyter-tools;
+    all-tools = with final.nubank; cli-tools ++ clojure-tools ++ jupyter-tools;
 
     cli-tools = with unstable; [
       awscli
