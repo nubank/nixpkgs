@@ -1,37 +1,35 @@
-self: super:
+final: prev:
 let
-  unstable = import (builtins.fetchTarball {
-    # When bumping, use the last commit from https://github.com/NixOS/nixpkgs/tree/nixpkgs-unstable
-    # So we can use Hydra cache when possible
-    url = "https://github.com/nixos/nixpkgs/archive/f5daa8ab31fb910712b3e1e71ae46818bc9e33b3.tar.gz";
-    # Use fakeSha256 to generate a new sha256 when updating, i.e.:
-    # sha256 = super.stdenv.lib.fakeSha256;
-    sha256 = "0sa96nmbs37fix7xxxzj3dmryi515arnzicfg71qhkp45gn44dzq";
-  }) {};
-  callPackage = unstable.pkgs.callPackage;
-in
-{
+  unstable = import ./nixpkgs-src.nix {
+    inherit (prev) lib;
+    # builtins.currentSystem doesn't exists in Flakes because this is impure
+    # Ideally we would inject this from flake.nix but AFAIK there is no way
+    # to pass parameters to a overlay
+    # TODO: Once Flakes is stable we can just manage this with flake.lock
+    # instead
+    system = if (builtins ? currentSystem) then
+      builtins.currentSystem
+    else
+      "x86_64-linux";
+  };
+
+  inherit (unstable.pkgs) callPackage;
+in {
   nubank = rec {
     # Custom packages
     dart = unstable.dart;
 
-    flutter = callPackage ./pkgs/flutter {
-      inherit dart;
-    };
+    flutter = callPackage ./pkgs/flutter { inherit dart; };
 
-    flutter-patch = callPackage ./pkgs/flutter-patch {};
+    flutter-patch = callPackage ./pkgs/flutter-patch { };
 
     hover = unstable.hover.override { inherit flutter; };
 
     nodejs = unstable.nodejs-10_x;
 
-    yarn = (unstable.yarn.override {
-      inherit nodejs;
-    });
+    yarn = (unstable.yarn.override { inherit nodejs; });
 
-    leiningen = (unstable.leiningen.override {
-      jdk = unstable.openjdk8;
-    });
+    leiningen = (unstable.leiningen.override { jdk = unstable.openjdk8; });
 
     # Meta packages
     all-tools = cli-tools ++ clojure-tools ++ jupyter-tools;
@@ -67,15 +65,9 @@ in
       lumo
     ];
 
-    jupyter-tools = with unstable; [
-      jupyter
-      python37Packages.jupyter_core
-    ];
+    jupyter-tools = with unstable; [ jupyter python37Packages.jupyter_core ];
 
     # Some Nubankers prefer custom clients, so don't include this set in all-tools
-    desktop-tools = with unstable; [
-      slack
-      zoom-us
-    ];
+    desktop-tools = with unstable; [ slack zoom-us ];
   };
 }
