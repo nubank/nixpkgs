@@ -1,16 +1,9 @@
 final: prev:
 let
+  # TODO: Once Flakes is stable we should manage this with flake.lock instead
   unstable = import ./nixpkgs-src.nix {
     inherit (prev) lib;
-    # builtins.currentSystem doesn't exists in Flakes because this is impure
-    # Ideally we would inject this from flake.nix but AFAIK there is no way
-    # to pass parameters to a overlay
-    # TODO: Once Flakes is stable we can just manage this with flake.lock
-    # instead
-    system = if (builtins ? currentSystem) then
-      builtins.currentSystem
-    else
-      "x86_64-linux";
+    system = final.stdenv.system;
   };
 
   inherit (unstable.pkgs) callPackage;
