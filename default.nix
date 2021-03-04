@@ -9,7 +9,7 @@ let
 
   flutter = callPackage ./pkgs/flutter { inherit (final.nubank) dart; };
 
-  flutter-patch = callPackage ./pkgs/flutter-patch { };
+  flutter-patch = callPackage ./pkgs/flutter-patch {};
 
   hover = unstable.hover.override { inherit (final.nubank) flutter; };
 
@@ -17,8 +17,25 @@ let
 
   yarn = (unstable.yarn.override { inherit (final.nubank) nodejs; });
 
-  leiningen = (unstable.leiningen.override { jdk = unstable.openjdk8; });
-in {
+  # Magilla doesn't work with 2.9.5, and leiningen 2.9.4 release is broken
+  leiningen = (unstable.leiningen.override { jdk = unstable.openjdk8; }).overrideAttrs (
+    oldAttrs: rec {
+      inherit (oldAttrs) pname;
+      version = "2.9.3";
+
+      src = prev.fetchurl {
+        url = "https://raw.github.com/technomancy/leiningen/${version}/bin/lein-pkg";
+        sha256 = "sha256-QuGOioM7hj3fuhxVZb1deLVLzuZh7IbpSovcZ7FzPmM=";
+      };
+
+      jarsrc = prev.fetchurl {
+        url = "https://github.com/technomancy/leiningen/releases/download/${version}/${pname}-${version}-standalone.zip";
+        sha256 = "sha256-I+HfGLyXIm1XD0czWo1UPht1nqMDVE6lfVMJvj3ty7s=";
+      };
+    }
+  );
+in
+{
   nubank = {
     # Custom packages
     inherit dart flutter flutter-patch hover nodejs yarn leiningen;
