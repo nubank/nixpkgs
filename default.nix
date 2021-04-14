@@ -45,6 +45,7 @@ in
 
     cli-tools = with unstable; [
       awscli
+      aws-iam-authenticator
       circleci-cli
       fzf
       gettext
