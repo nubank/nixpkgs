@@ -17,20 +17,19 @@ let
 
   yarn = (unstable.yarn.override { inherit (final.nubank) nodejs; });
 
-  # Magilla doesn't work with 2.9.5, and leiningen 2.9.4 release is broken
-  leiningen = (unstable.leiningen.override { jdk = unstable.openjdk8; }).overrideAttrs (
+  leiningen = (unstable.leiningen.override { jdk = unstable.openjdk11; }).overrideAttrs (
     oldAttrs: rec {
       inherit (oldAttrs) pname;
-      version = "2.9.3";
+      version = "2.9.6";
 
       src = prev.fetchurl {
         url = "https://raw.github.com/technomancy/leiningen/${version}/bin/lein-pkg";
-        sha256 = "sha256-QuGOioM7hj3fuhxVZb1deLVLzuZh7IbpSovcZ7FzPmM=";
+        sha256 = "sha256-CUtY4rE7QhVqr31EPtX2ZlruJ1KdlRL41ygrqjzAFCk=";
       };
 
       jarsrc = prev.fetchurl {
         url = "https://github.com/technomancy/leiningen/releases/download/${version}/${pname}-${version}-standalone.zip";
-        sha256 = "sha256-I+HfGLyXIm1XD0czWo1UPht1nqMDVE6lfVMJvj3ty7s=";
+        sha256 = "sha256-QcVD9z7sQyfcIOYNXYIPwqncdyvGcWELnDhdnE9ZcLg=";
       };
     }
   );
