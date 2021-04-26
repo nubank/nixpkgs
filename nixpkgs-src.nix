@@ -1,10 +1,10 @@
 { lib, stdenv, ... }:
 
 import (builtins.fetchTarball {
-  url = "https://github.com/nixos/nixpkgs/archive/a5f6343808293cb77a2f6f735bce0442d13a0999.tar.gz";
+  url = "https://github.com/nixos/nixpkgs/archive/64be38f31fa76963ec31d361f0b797f0cca9d31f.tar.gz";
   # Use fakeSha256 to generate a new sha256 when updating, i.e.:
   # sha256 = lib.fakeSha256;
-  sha256 = "0v32ni5yq5v2m8jq1xnqhn4lc7j4whlscpv54rrwdbqqf5szjrwi";
+  sha256 = "11bzji77s1zkww0qfkpqp5rd6np1y7c3syp4x3627w330ap94k8x";
 }) {
   config = { allowUnfree = true; };
   system = stdenv.system;
