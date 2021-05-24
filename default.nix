@@ -53,8 +53,6 @@ in
       kubectl
       minikube
       nodejs
-      nss
-      nssTools
       openfortivpn
       openssl
       python37Full
