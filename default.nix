@@ -17,22 +17,7 @@ let
 
   yarn = (unstable.yarn.override { inherit (final.nubank) nodejs; });
 
-  leiningen = (unstable.leiningen.override { jdk = unstable.openjdk11; }).overrideAttrs (
-    oldAttrs: rec {
-      inherit (oldAttrs) pname;
-      version = "2.9.6";
-
-      src = prev.fetchurl {
-        url = "https://raw.github.com/technomancy/leiningen/${version}/bin/lein-pkg";
-        sha256 = "sha256-CUtY4rE7QhVqr31EPtX2ZlruJ1KdlRL41ygrqjzAFCk=";
-      };
-
-      jarsrc = prev.fetchurl {
-        url = "https://github.com/technomancy/leiningen/releases/download/${version}/${pname}-${version}-standalone.zip";
-        sha256 = "sha256-QcVD9z7sQyfcIOYNXYIPwqncdyvGcWELnDhdnE9ZcLg=";
-      };
-    }
-  );
+  leiningen = (unstable.leiningen.override { jdk = unstable.openjdk11; });
 in
 {
   nubank = {
@@ -55,7 +40,7 @@ in
       nodejs
       openfortivpn
       openssl
-      python37Full
+      python38Full
       sassc
       tektoncd-cli
       yarn
@@ -72,7 +57,7 @@ in
       lumo
     ];
 
-    jupyter-tools = with unstable; [ jupyter python37Packages.jupyter_core ];
+    jupyter-tools = with unstable; [ jupyter python38Packages.jupyter_core ];
 
     # Some Nubankers prefer custom clients, so don't include this set in all-tools
     desktop-tools = with unstable; [ slack zoom-us ];
