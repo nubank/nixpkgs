@@ -5,28 +5,6 @@ let
 
   inherit (unstable.pkgs) callPackage;
 
-  clojure-lsp = with final; final.clojure-lsp.overrideAttrs (oldAttrs: rec {
-    pname = "clojure-lsp";
-    version = "2021.06.01-16.19.44";
-
-    src = fetchFromGitHub {
-      owner = pname;
-      repo = pname;
-      rev = version;
-      sha256 = "sha256-dACvjm+uEVWotoeYhA4gCenKeprpF2dI0PGNRAVALao=";
-    };
-
-    jar = fetchurl {
-      url = "https://github.com/clojure-lsp/clojure-lsp/releases/download/${version}/clojure-lsp.jar";
-      sha256 = "sha256-V12rSYv/Yu12ZpLSROd+4pyGiEGRfJ7lmRqCeikcQ5Q=";
-    };
-
-    CLOJURE_LSP_JAR = jar;
-
-    # TODO: tests are broken in this release
-    doCheck = false;
-  });
-
   dart = unstable.dart;
 
   flutter = callPackage ./pkgs/flutter { inherit (final.nubank) dart; };
