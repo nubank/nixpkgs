@@ -28,8 +28,8 @@ in
     all-tools = with final.nubank; cli-tools ++ clojure-tools ++ jupyter-tools;
 
     cli-tools = with unstable; [
-      awscli
       aws-iam-authenticator
+      awscli
       circleci-cli
       fzf
       gettext
@@ -38,6 +38,7 @@ in
       kubectl
       minikube
       nodejs
+      nssTools
       openfortivpn
       openssl
       python38Full
