@@ -44,6 +44,7 @@ in
       python38Full
       sassc
       tektoncd-cli
+      terraform_1_0
       yarn
       # TODO: ruby is installed by Ansible, but I never saw it used in Nubank
       # ruby
