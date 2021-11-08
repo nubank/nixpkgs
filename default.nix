@@ -1,7 +1,9 @@
 final: prev:
 let
-  # TODO: Once Flakes is stable we should manage this with flake.lock instead
-  unstable = import ./nixpkgs-src.nix { inherit (prev) lib stdenv; };
+  unstable = import ./nixpkgs-src.nix {
+    inherit (prev) lib;
+    system = prev.stdenv.system;
+  };
 
   inherit (unstable.pkgs) callPackage;
 

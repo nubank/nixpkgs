@@ -1,5 +1,5 @@
 #! /usr/bin/env nix-shell
-#! nix-shell -i bb -p babashka git
+#! nix-shell shell.nix -i bb
 
 (require '[clojure.string :as str]
          '[clojure.java.shell :refer [sh]]
@@ -31,14 +31,14 @@
 (defn generate-nixpkgs-src
   [url sha256]
   (->> (render
-"{ stdenv, ... }:
+"{ system ? builtins.currentSystem, ... }:
 
 import (builtins.fetchTarball {
   url = \"{{url}}\";
   sha256 = \"{{sha256}}\";
 }) {
+  inherit system;
   config = { allowUnfree = true; };
-  system = stdenv.system;
 }" {:url    url
     :sha256 sha256})
        (spit "nixpkgs-src.nix")))
