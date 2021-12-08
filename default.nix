@@ -7,7 +7,7 @@ let
 
   inherit (unstable.pkgs) callPackage;
 
-  dart = unstable.dart;
+  dart = callPackage ./pkgs/dart { inherit unstable; };
 
   flutter = callPackage ./pkgs/flutter { inherit (final.nubank) dart; };
 
