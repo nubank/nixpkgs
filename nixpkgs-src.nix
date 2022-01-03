@@ -1,8 +1,8 @@
 { system ? builtins.currentSystem, ... }:
 
 import (builtins.fetchTarball {
-  url = "https://github.com/nixos/nixpkgs/archive/070c8d83414ce38427ba04168676831aa26fda76.tar.gz";
-  sha256 = "0vwm2m6x98br09zx7ijhq5iz68wnrhv430nza5bzbqsnapsq3b1c";
+  url = "https://github.com/nixos/nixpkgs/archive/c38ca58c0b4b5d9423609c58636988a9f81325d6.tar.gz";
+  sha256 = "14bim8bsswilv583wk0nm6cgmnffm6lmb1ds87g3rjizf4bfq8rg";
 }) {
   inherit system;
   config = { allowUnfree = true; };
