@@ -7,6 +7,8 @@ let
 
   inherit (unstable.pkgs) callPackage;
 
+  cortex = callPackage ./pkgs/cortex { inherit (unstable); };
+
   dart = callPackage ./pkgs/dart { inherit unstable; };
 
   flutter = callPackage ./pkgs/flutter { inherit (final.nubank) dart; };
@@ -30,7 +32,7 @@ in
 {
   nubank = {
     # Custom packages
-    inherit dart flutter flutter-patch hover nodejs yarn leiningen;
+    inherit cortex dart flutter flutter-patch hover nodejs yarn leiningen;
 
     # Meta packages
     all-tools = with final.nubank; cli-tools ++ clojure-tools ++ jupyter-tools;

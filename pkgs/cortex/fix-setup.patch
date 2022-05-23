@@ -1,0 +1,81 @@
+diff --git a/opt/traps/deb-installer/setup.d/log_redirect.sh b/opt/traps/deb-installer/setup.d/log_redirect.sh
+index e671769..c3c1e43 100644
+--- a/opt/traps/deb-installer/setup.d/log_redirect.sh
++++ b/opt/traps/deb-installer/setup.d/log_redirect.sh
+@@ -4,7 +4,7 @@
+ 
+ set -u
+ 
+-declare -r install_log_default="/var/log/traps-install.log"
++declare -r install_log_default="$out/log/traps-install.log"
+ declare install_log="${TRAPS_INSTALL_LOG-$install_log_default}"
+ 
+ setup_installer_log() {
+diff --git a/opt/traps/deb-installer/setup.d/pre-install.sh b/opt/traps/deb-installer/setup.d/pre-install.sh
+index c87160f..00c6526 100644
+--- a/opt/traps/deb-installer/setup.d/pre-install.sh
++++ b/opt/traps/deb-installer/setup.d/pre-install.sh
+@@ -261,11 +261,6 @@ _verify_required_libraries() {
+ pre_install() {
+     declare -r should_verify_requirements="$1"
+ 
+-    if [[ "$EUID" -ne 0 ]]; then
+-        echo "Please run Cortex XDR installer as root"
+-        return 1
+-    fi
+-
+     if ! _check_64bit; then
+         echo "Unsupported architecture: $(uname -m), expected x86_64"
+         return 1
+@@ -279,7 +274,7 @@ pre_install() {
+     if $should_verify_requirements; then
+         step_start "Checking prerequisites"
+ 
+-        _verify_required_libraries
++        # _verify_required_libraries
+         if [[ "$?" -ne 0 ]]; then
+             echo "Prerequisites not met. Please install missing packages"
+             return 1
+diff --git a/opt/traps/deb-installer/setup.sh b/opt/traps/deb-installer/setup.sh
+index 30663f9..b3db5a7 100755
+--- a/opt/traps/deb-installer/setup.sh
++++ b/opt/traps/deb-installer/setup.sh
+@@ -72,8 +72,6 @@ vet_path() {
+     export PATH="$(IFS=":"; echo "${path_final[*]}")"
+ }
+ 
+-vet_path
+-
+ unalias -a
+ 
+ source "./setup.d/log_redirect.sh"
+@@ -249,6 +247,8 @@ _do_upgrade() {
+ _unpack_installation() {
+     umask 0177
+ 
++    chmod 755 "$deploy_dir"
++
+     tar --warning=no-timestamp -xzf "$agent_full_version.tar.gz" -C "$deploy_dir/"
+     if [[ $? -ne 0 ]]; then
+         rm -rf "$deploy_dir/"
+@@ -305,11 +305,6 @@ _cleanup() {
+ }
+ 
+ main() {
+-    if [[ "$EUID" -ne 0 ]]; then
+-        echo "Please run Cortex XDR installer as root"
+-        return 1
+-    fi
+-
+     setup_installer_log "Install"
+ 
+     declare -r agent_full_version="$(cat ".version" | sed -e 's/-dbg$//')"
+@@ -321,7 +316,7 @@ main() {
+         return 1
+     fi
+ 
+-    declare -r deploy_dir="/opt/traps"
++    declare -r deploy_dir="$out/bin"
+     declare -r config_dir="$deploy_dir/config"
+ 
+     declare -r uninstall_script="$deploy_dir/scripts/uninstall.sh"
